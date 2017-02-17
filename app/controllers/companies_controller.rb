@@ -1,11 +1,18 @@
 class CompaniesController < ApplicationController
 
   def index 
-    @companies = Unirest.get("http://localhost:3000/api/v1/companies.json").body
+    company_hashes = Unirest.get("http://localhost:3000/api/v1/companies.json").body
+    @companies = []
+    company_hashes.each do |company_hash|
+      @companies << Company.new(company_hash)
+    
+    end
+
   end 
 
   def show 
-    @company = Unirest.get("http://localhost:3000/api/v1/companies/#{params[:id]}.json").body
+    @company_hash = Unirest.get("http://localhost:3000/api/v1/companies/#{params[:id]}.json").body
+    @company = Company.new(@company_hash)
   end 
 
   def new 
