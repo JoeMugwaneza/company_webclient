@@ -22,17 +22,15 @@ class CompaniesController < ApplicationController
   end 
 
   def update
-    @company = Unirest.patch("#{ENV['DOMAIN']}/companies/#{params[:id]}.json",
-      :headers => {"Accept" => "application/json"},
-      :parameters => {:name => params[:name],
-      :profession => params[:profession]}).body
+    @company = Company.find(params[:id])
+     @company = Company.update({name: params[:name], profession: params[:profession]})
 
     redirect_to "/companies/#{@company["id"]}"
   end 
 
   def destroy
-
-    @company = Unirest.delete("#{ENV['DOMAIN']}/#{params[:id]}.json").body
+    @company = Company.delete(params[:id])
+    
     redirect_to "/companies"
   end
 

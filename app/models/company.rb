@@ -23,9 +23,21 @@ class Company
   end 
 
   def self.create(params)
-     company_hash = Unirest.post("#{ENV['DOMAIN']}/companies.json", :headers => {"Accept"=> "application/json"}, :parameters => params).body
+     company_hash = Unirest.post("#{ENV['DOMAIN']}/companies.json", 
+      :headers => {"Accept"=> "application/json"}, 
+      :parameters => params).body
 
     Company.new(company_hash)
-
   end
+
+  def self.update(params)
+    company_hash = Unirest.patch("#{ENV['DOMAIN']}/companies.json", 
+      :headers => {"Accept"=> "application/json"}, 
+      :parameters => params).body
+  end 
+
+  def self.delete(id)
+    company_hash = Unirest.delete("#{ENV['DOMAIN']}/companies/#{id}.json").body
+  end 
+
 end
