@@ -23,13 +23,14 @@ class CompaniesController < ApplicationController
 
   def update
     @company = Company.find(params[:id])
-     Company.update({id: params[:id], name: params[:name], profession: params[:profession]})
+     @company.update({id: params[:id], name: params[:name], profession: params[:profession]})
 
     redirect_to "/companies/#{@company.id}"
   end 
 
   def destroy
-    @company = Company.delete(params[:id])
+    @company = Company.find(params[:id])
+    @company.destroy
     
     redirect_to "/companies"
   end

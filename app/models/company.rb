@@ -7,13 +7,13 @@ class Company
   end 
 
   def self.find(id)
-    company_hash = Unirest.get("#{ENV['DOMAIN']}/companies/#{id}.json").body
+    company_hash = Unirest.get("#{ENV['DOMAIN']}/companies/#{id}.json", headers:{"Accept" => "application/json", "Authorization" => "Token token=#{ENV['API_KEY']}", "X-User-Email" => ENV['API_EMAIL']}).body
    Company.new(company_hash)
   end 
 
   def self.all 
 
-    company_hashes = Unirest.get("#{ENV['DOMAIN']}/companies.json",headers:{ "Accept" => "application/json", "Authorization" => "Token token = #{ENV['api_ke']}", "X-User-Email" => ENV['API_EMAIL']}).body
+    company_hashes = Unirest.get("#{ENV['DOMAIN']}/companies.json",headers:{ "Accept" => "application/json", "Authorization" => "Token token=#{ENV['API_KEY']}", "X-User-Email" => ENV['API_EMAIL']}).body
     companies = []
     company_hashes.each do |company_hash|
       companies << Company.new(company_hash)
@@ -30,7 +30,7 @@ class Company
     Company.new(company_hash)
   end
 
-  def self.update(edit_params)
+  def update(edit_params)
     @company_hash = Unirest.patch("#{ENV['DOMAIN']}/companies.json", 
       :headers => {"Accept"=> "application/json"}, 
       :parameters => edit_params).body
@@ -38,8 +38,8 @@ class Company
     Company.new(@company_hash)
   end 
 
-  def self.delete(id)
-    company_hash = Unirest.delete("#{ENV['DOMAIN']}/companies/#{id}.json").body
+  def destroy
+    company_hash = Unirest.delete("#{ENV['DOMAIN']}/companies/#{id}.json", headers:{"Accept" => "application/json", "Authorization" => "Token token=#{ENV['API_KEY']}", "X-User-Email" => ENV['API_EMAIL']}).body
   end 
 
 end
